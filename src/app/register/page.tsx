@@ -6,7 +6,7 @@ import { registerSchema, type RegisterFormData } from "@/lib/validations/auth";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { BookOpen, Loader2, GraduationCap, PenLine } from "lucide-react";
+import { BookOpen, Loader2, GraduationCap, PenLine, Mail, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,6 +19,8 @@ export default function RegisterPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [emailSent, setEmailSent] = useState(false);
+  const [submittedEmail, setSubmittedEmail] = useState("");
 
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -43,9 +45,50 @@ export default function RegisterPage() {
       setLoading(false);
       return;
     }
-    router.push("/dashboard");
-    router.refresh();
+    setSubmittedEmail(data.email);
+    setEmailSent(true);
+    setLoading(false);
   };
+
+  if (emailSent) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex flex-col">
+        <div className="flex items-center justify-between px-6 py-4">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500">
+              <BookOpen className="h-4 w-4 text-white" />
+            </div>
+            <span className="text-lg font-semibold text-slate-800">Peak</span>
+          </Link>
+        </div>
+        <div className="flex flex-1 items-center justify-center px-4">
+          <div className="w-full max-w-md">
+            <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center">
+              <div className="flex justify-center mb-4">
+                <div className="h-16 w-16 rounded-full bg-blue-50 flex items-center justify-center">
+                  <Mail className="h-8 w-8 text-blue-500" />
+                </div>
+              </div>
+              <h1 className="text-2xl font-bold text-slate-800 mb-2">Подтвердите почту</h1>
+              <p className="text-slate-500 mb-2">
+                Мы отправили письмо на
+              </p>
+              <p className="font-semibold text-slate-800 mb-4">{submittedEmail}</p>
+              <p className="text-sm text-slate-500 mb-6">
+                Откройте письмо и нажмите на кнопку подтверждения. После этого вы сможете войти в аккаунт.
+              </p>
+              <div className="rounded-lg bg-amber-50 border border-amber-100 px-4 py-3 text-sm text-amber-700 mb-6">
+                Не нашли письмо? Проверьте папку «Спам».
+              </div>
+              <Link href="/login">
+                <Button variant="outline" className="w-full">Перейти ко входу</Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
