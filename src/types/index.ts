@@ -13,6 +13,7 @@ export interface Profile {
   id: string;
   role: UserRole;
   full_name: string;
+  username: string | null;
   avatar_url: string | null;
   locale: string;
   bio: string | null;
@@ -20,6 +21,18 @@ export interface Profile {
   streak_count: number;
   last_active_date: string | null;
   created_at: string;
+}
+
+export type FollowStatus = "pending" | "accepted" | "declined";
+
+export interface Follow {
+  id: string;
+  follower_id: string;
+  following_id: string;
+  status: FollowStatus;
+  created_at: string;
+  follower?: Profile;
+  following?: Profile;
 }
 
 export interface Course {
