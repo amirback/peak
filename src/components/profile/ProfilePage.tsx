@@ -112,12 +112,13 @@ export function ProfilePage({ profile: initialProfile, badges, userEmail }: Prop
     }
 
     const updateData: any = { full_name: data.full_name, bio: data.bio, locale: data.locale, avatar_url };
-    if (username && username !== profile.username && usernameStatus === "available") {
+    if (username && username !== profile.username) {
+      if (usernameStatus !== "available") {
+        toast({ title: "Этот юзернейм уже занят", variant: "destructive" });
+        setSaving(false);
+        return;
+      }
       updateData.username = username.toLowerCase();
-    } else if (!username && profile.username) {
-      // keep existing
-    } else if (!username) {
-      // no username set yet, skip
     }
 
     const { data: updated } = await supabase.from("profiles").update(updateData).eq("id", profile.id).select().single();

@@ -27,7 +27,7 @@ export function FollowButton({ currentUserId, targetUserId, initialStatus, onSta
     if (!error) {
       await supabase.from("notifications").insert({
         user_id: targetUserId,
-        type: "new_message",
+        type: "follow_request",
         content: "Новый запрос на подписку",
         link: "/profile",
       });

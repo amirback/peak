@@ -7,7 +7,9 @@ export type NotificationType =
   | "new_lesson"
   | "badge_earned"
   | "deadline_reminder"
-  | "course_completed";
+  | "course_completed"
+  | "follow_request"
+  | "follow_accepted";
 
 export interface Profile {
   id: string;

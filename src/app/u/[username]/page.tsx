@@ -12,6 +12,8 @@ export default async function UserProfilePage({ params }: Props) {
   if (!user) redirect("/login");
 
   const { data: currentProfile } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+  if (!currentProfile) redirect("/login");
+
   const { data: targetProfile } = await supabase.from("profiles").select("*").ilike("username", username).single();
   if (!targetProfile) notFound();
 

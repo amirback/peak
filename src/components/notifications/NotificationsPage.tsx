@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { Bell, MessageSquare, BookOpen, Award, Calendar, CheckCircle, Check } from "lucide-react";
+import { Bell, MessageSquare, BookOpen, Award, Calendar, CheckCircle, Check, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatRelativeTime } from "@/lib/utils";
 import { cn } from "@/lib/utils";
@@ -18,6 +18,8 @@ const ICONS: Record<NotificationType, any> = {
   badge_earned: Award,
   deadline_reminder: Calendar,
   course_completed: CheckCircle,
+  follow_request: UserPlus,
+  follow_accepted: UserPlus,
 };
 
 export function NotificationsPage({ userId }: Props) {
