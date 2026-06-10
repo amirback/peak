@@ -1,0 +1,17 @@
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
+import { AppShell } from "@/components/layout/AppShell";
+import { LeaderboardPage } from "@/components/gamification/LeaderboardPage";
+
+export default async function Leaderboard() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+  const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+
+  return (
+    <AppShell profile={profile}>
+      <LeaderboardPage currentUserId={user.id} />
+    </AppShell>
+  );
+}
