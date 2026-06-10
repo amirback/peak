@@ -73,16 +73,18 @@ export function StudentDashboard({ profile }: Props) {
   };
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-800">{t("dashboard.welcome")}, {profile.full_name.split(" ")[0]}</h1>
-        <p className="text-slate-500 mt-1 text-sm">
-          {profile.streak_count > 0 ? `${profile.streak_count} ${t("dashboard.streakDays")}` : "Начните учиться сегодня"}
-        </p>
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-bold text-slate-800">{t("dashboard.welcome")}, {profile.full_name.split(" ")[0]}</h1>
+          <p className="text-slate-500 text-sm">
+            {profile.streak_count > 0 ? `🔥 ${profile.streak_count} ${t("dashboard.streakDays")}` : "Начните учиться сегодня"}
+          </p>
+        </div>
       </div>
 
       {/* Stats Row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
@@ -137,24 +139,24 @@ export function StudentDashboard({ profile }: Props) {
         </Card>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid lg:grid-cols-3 gap-4">
         {/* Level Card */}
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-slate-500">{t("dashboard.level")}</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-12 w-12 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-lg">
+          <CardContent className="pt-0">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
                 {levelInfo.level}
               </div>
               <div>
-                <p className="font-semibold text-slate-800">{levelInfo.title}</p>
+                <p className="font-semibold text-slate-800 text-sm">{levelInfo.title}</p>
                 <p className="text-xs text-slate-500">{profile.xp} XP</p>
               </div>
             </div>
-            <Progress value={Math.min(levelProgress, 100)} className="h-2" />
-            <p className="text-xs text-slate-500 mt-2">До следующего уровня: {xpToNext} XP</p>
+            <Progress value={Math.min(levelProgress, 100)} className="h-1.5" />
+            <p className="text-xs text-slate-400 mt-1.5">До уровня {levelInfo.level + 1}: {xpToNext} XP</p>
           </CardContent>
         </Card>
 
@@ -227,7 +229,7 @@ export function StudentDashboard({ profile }: Props) {
 
       {/* My Courses */}
       <div>
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-3">
           <h2 className="text-lg font-semibold text-slate-800">{t("dashboard.myCourses")}</h2>
           <Link href="/courses"><Button variant="ghost" size="sm" className="gap-1 text-sm">
             {t("courses.catalog")} <ChevronRight className="h-4 w-4" />
@@ -240,14 +242,14 @@ export function StudentDashboard({ profile }: Props) {
           </div>
         ) : enrolledCourses.length === 0 ? (
           <Card>
-            <CardContent className="py-12 text-center">
-              <BookOpen className="h-12 w-12 text-slate-200 mx-auto mb-4" />
-              <p className="text-slate-500 mb-4">{t("courses.noCourses")}</p>
-              <Link href="/courses"><Button>{t("courses.catalog")}</Button></Link>
+            <CardContent className="py-8 text-center">
+              <BookOpen className="h-10 w-10 text-slate-200 mx-auto mb-3" />
+              <p className="text-slate-500 mb-3 text-sm">{t("courses.noCourses")}</p>
+              <Link href="/courses"><Button size="sm">{t("courses.catalog")}</Button></Link>
             </CardContent>
           </Card>
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {enrolledCourses.map(c => (
               <Link key={c.course.id} href={`/courses/${c.course.id}`}>
                 <Card className="hover:border-blue-200 transition-colors cursor-pointer overflow-hidden">

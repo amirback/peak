@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useTranslations } from "next-intl";
-import { MessageSquare, Send, Search, AtSign } from "lucide-react";
+import { MessageSquare, Send, Search, AtSign, ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -138,10 +138,12 @@ export function ChatPage({ currentUser }: Props) {
   const conversationPartnerIds = new Set(conversations.map(c => c.partner.id));
   const newConnections = connections.filter(c => !conversationPartnerIds.has(c.id));
 
+  const showSidebar = !selectedPartner; // on mobile: show sidebar OR chat
+
   return (
-    <div className="h-[calc(100vh-8rem)] flex gap-0 bg-white rounded-2xl border border-slate-200 overflow-hidden">
+    <div className="h-[calc(100dvh-5rem)] sm:h-[calc(100vh-8rem)] flex gap-0 bg-white rounded-2xl border border-slate-200 overflow-hidden">
       {/* Sidebar */}
-      <div className="w-72 shrink-0 border-r border-slate-200 flex flex-col">
+      <div className={cn("border-r border-slate-200 flex flex-col", "w-full sm:w-72 sm:shrink-0", selectedPartner ? "hidden sm:flex" : "flex")}>
         <div className="p-4 border-b border-slate-100 space-y-3">
           <h2 className="font-semibold text-slate-800">{t("chat.title")}</h2>
           {/* Search by username */}
@@ -239,10 +241,14 @@ export function ChatPage({ currentUser }: Props) {
       </div>
 
       {/* Chat Area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className={cn("flex-1 flex flex-col min-w-0", !selectedPartner && "hidden sm:flex")}>
         {selectedPartner ? (
           <>
-            <div className="flex items-center gap-3 px-6 py-4 border-b border-slate-100">
+            <div className="flex items-center gap-3 px-4 py-3 border-b border-slate-100">
+              {/* Mobile back button */}
+              <button onClick={() => setSelectedPartner(null)} className="sm:hidden -ml-1 p-1 rounded-lg hover:bg-slate-50">
+                <ArrowLeft className="h-5 w-5 text-slate-500" />
+              </button>
               <Link href={selectedPartner.username ? `/u/${selectedPartner.username}` : "#"}>
                 <Avatar className="h-9 w-9 cursor-pointer">
                   <AvatarImage src={selectedPartner.avatar_url || undefined} />
@@ -250,12 +256,12 @@ export function ChatPage({ currentUser }: Props) {
                 </Avatar>
               </Link>
               <div>
-                <p className="font-semibold text-slate-800">{selectedPartner.full_name}</p>
+                <p className="font-semibold text-slate-800 text-sm">{selectedPartner.full_name}</p>
                 {selectedPartner.username && <p className="text-xs text-blue-400">@{selectedPartner.username}</p>}
               </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-6 space-y-3">
+            <div className="flex-1 overflow-y-auto p-4 space-y-3">
               {messages.length === 0 && (
                 <div className="text-center text-slate-400 text-sm py-8">{t("chat.noMessages")}</div>
               )}

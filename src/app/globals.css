@@ -18,7 +18,10 @@
     font-family: 'Inter', system-ui, sans-serif;
     color: #1E293B;
     background-color: #F8FAFC;
+    background-image: radial-gradient(circle, #C7D2DC 1px, transparent 1px);
+    background-size: 24px 24px;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {

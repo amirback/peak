@@ -92,65 +92,61 @@ export function CourseCatalog({ userId }: Props) {
       </div>
 
       {loading ? (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {[1, 2, 3, 4, 5, 6].map(i => <div key={i} className="h-64 bg-slate-100 rounded-xl animate-pulse" />)}
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {[1, 2, 3, 4, 5, 6].map(i => <div key={i} className="h-52 bg-white/70 rounded-xl animate-pulse" />)}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="py-16 text-center">
-          <BookOpen className="h-12 w-12 text-slate-200 mx-auto mb-4" />
-          <p className="text-slate-500">{t("courses.noCourses")}</p>
+        <div className="py-12 text-center">
+          <BookOpen className="h-10 w-10 text-slate-200 mx-auto mb-3" />
+          <p className="text-slate-400 text-sm">{t("courses.noCourses")}</p>
         </div>
       ) : (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {filtered.map(course => {
             const isEnrolled = enrolledIds.has(course.id);
             return (
-              <Card key={course.id} className="overflow-hidden flex flex-col hover:border-blue-200 transition-colors">
+              <Card key={course.id} className="overflow-hidden flex flex-col hover:border-blue-200 hover:shadow-md transition-all bg-white/90">
                 <Link href={isEnrolled ? `/courses/${course.id}` : "#"} className={isEnrolled ? "" : "pointer-events-none"}>
                   {course.cover_url ? (
-                    <div className="h-36 overflow-hidden">
+                    <div className="h-28 sm:h-36 overflow-hidden">
                       <img src={course.cover_url} alt={course.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
                     </div>
                   ) : (
-                    <div className="h-36 bg-gradient-to-br from-blue-50 to-emerald-50 flex items-center justify-center">
-                      <BookOpen className="h-10 w-10 text-blue-300" />
+                    <div className="h-28 sm:h-36 bg-gradient-to-br from-blue-50 to-emerald-50 flex items-center justify-center">
+                      <BookOpen className="h-8 w-8 text-blue-300" />
                     </div>
                   )}
                 </Link>
-                <CardContent className="p-5 flex flex-col flex-1">
+                <CardContent className="p-3 sm:p-4 flex flex-col flex-1">
                   <div className="flex-1">
-                    <h3 className="font-semibold text-slate-800 mb-1 line-clamp-2">{course.title}</h3>
-                    <p className="text-sm text-slate-500 line-clamp-2 mb-3">{course.description}</p>
+                    <h3 className="font-semibold text-slate-800 mb-1 line-clamp-2 text-sm">{course.title}</h3>
+                    <p className="text-xs text-slate-500 line-clamp-2 mb-2 hidden sm:block">{course.description}</p>
 
-                    <div className="flex items-center gap-2 mb-4">
-                      <Avatar className="h-5 w-5">
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <Avatar className="h-4 w-4">
                         <AvatarImage src={course.teacher?.avatar_url} />
-                        <AvatarFallback className="text-[10px]">{course.teacher?.full_name?.[0]}</AvatarFallback>
+                        <AvatarFallback className="text-[9px]">{course.teacher?.full_name?.[0]}</AvatarFallback>
                       </Avatar>
-                      <span className="text-xs text-slate-500">{course.teacher?.full_name}</span>
+                      <span className="text-xs text-slate-400 truncate">{course.teacher?.full_name}</span>
                     </div>
 
-                    <div className="flex items-center gap-3 text-xs text-slate-500">
-                      <span className="flex items-center gap-1"><BookOpen className="h-3.5 w-3.5" />{course.lessonCount} {t("courses.lessons")}</span>
-                      <span className="flex items-center gap-1"><Users className="h-3.5 w-3.5" />{course.studentCount}</span>
+                    <div className="flex items-center gap-2 text-xs text-slate-400">
+                      <span className="flex items-center gap-0.5"><BookOpen className="h-3 w-3" />{course.lessonCount}</span>
+                      <span className="flex items-center gap-0.5"><Users className="h-3 w-3" />{course.studentCount}</span>
                     </div>
                   </div>
 
-                  <div className="mt-4">
+                  <div className="mt-3">
                     {isEnrolled ? (
                       <Link href={`/courses/${course.id}`}>
-                        <Button variant="mint" className="w-full gap-2 text-sm">
-                          <CheckCircle className="h-4 w-4" />
+                        <Button variant="mint" className="w-full gap-1.5 text-xs h-8">
+                          <CheckCircle className="h-3.5 w-3.5" />
                           {t("courses.continue")}
                         </Button>
                       </Link>
                     ) : (
-                      <Button
-                        className="w-full text-sm"
-                        onClick={() => handleEnroll(course.id)}
-                        disabled={enrollingId === course.id}
-                      >
-                        {enrollingId === course.id ? <Loader2 className="h-4 w-4 animate-spin" /> : t("courses.enroll")}
+                      <Button className="w-full text-xs h-8" onClick={() => handleEnroll(course.id)} disabled={enrollingId === course.id}>
+                        {enrollingId === course.id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : t("courses.enroll")}
                       </Button>
                     )}
                   </div>

@@ -38,7 +38,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <div className="flex items-center justify-between px-6 py-4">
         <Link href="/" className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500">
@@ -49,10 +49,10 @@ export default function LoginPage() {
         <LanguageSwitcher />
       </div>
 
-      <div className="flex flex-1 items-center justify-center px-4 py-12">
-        <div className="w-full max-w-md">
-          <div className="bg-white rounded-2xl border border-slate-200 p-8">
-            <div className="mb-8">
+      <div className="flex flex-1 items-center justify-center px-4 py-6">
+        <div className="w-full max-w-sm">
+          <div className="bg-white/95 rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8">
+            <div className="mb-6">
               <h1 className="text-2xl font-bold text-slate-800">{t("auth.loginTitle")}</h1>
               <p className="mt-1 text-sm text-slate-500">{t("auth.loginSubtitle")}</p>
             </div>
